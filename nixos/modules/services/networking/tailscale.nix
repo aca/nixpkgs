@@ -99,7 +99,7 @@ in {
       stopIfChanged = false;
     };
 
-    systemd.services.tailscaled-autoconnect = mkIf (cfg.authKeyFile != null) {
+    systemd.services.tailscaled-autoconnect = {
       after = ["tailscale.service"];
       wants = ["tailscale.service"];
       wantedBy = [ "multi-user.target" ];
@@ -109,7 +109,7 @@ in {
       script = ''
         status=$(${config.systemd.package}/bin/systemctl show -P StatusText tailscaled.service)
         if [[ $status != Connected* ]]; then
-          ${cfg.package}/bin/tailscale up --auth-key 'file:${cfg.authKeyFile}' ${escapeShellArgs cfg.extraUpFlags}
+          ${cfg.package}/bin/tailscale up ${escapeShellArgs cfg.extraUpFlags}
         fi
       '';
     };
