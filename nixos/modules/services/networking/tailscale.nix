@@ -105,7 +105,7 @@ in {
       stopIfChanged = false;
     };
 
-    systemd.services.tailscaled-autoconnect = mkIf (cfg.authKeyFile != null) {
+    systemd.services.tailscaled-autoconnect = {
       after = ["tailscaled.service"];
       wants = ["tailscaled.service"];
       wantedBy = [ "multi-user.target" ];
@@ -115,10 +115,25 @@ in {
       script = ''
         status=$(${config.systemd.package}/bin/systemctl show -P StatusText tailscaled.service)
         if [[ $status != Connected* ]]; then
-          ${cfg.package}/bin/tailscale up --auth-key 'file:${cfg.authKeyFile}' ${escapeShellArgs cfg.extraUpFlags}
+          ${cfg.package}/bin/tailscale up ${escapeShellArgs cfg.extraUpFlags}
         fi
       '';
     };
+
+    # systemd.services.tailscaled-autoconnect = mkIf (cfg.authKeyFile != null) {
+    #   after = ["tailscaled.service"];
+    #   wants = ["tailscaled.service"];
+    #   wantedBy = [ "multi-user.target" ];
+    #   serviceConfig = {
+    #     Type = "oneshot";
+    #   };
+    #   script = ''
+    #     status=$(${config.systemd.package}/bin/systemctl show -P StatusText tailscaled.service)
+    #     if [[ $status != Connected* ]]; then
+    #       ${cfg.package}/bin/tailscale up --auth-key 'file:${cfg.authKeyFile}' ${escapeShellArgs cfg.extraUpFlags}
+    #     fi
+    #   '';
+    # };
 
     boot.kernel.sysctl = mkIf (cfg.useRoutingFeatures == "server" || cfg.useRoutingFeatures == "both") {
       "net.ipv4.conf.all.forwarding" = mkOverride 97 true;
