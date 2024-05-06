@@ -110,7 +110,7 @@ in {
         status=$(${config.systemd.package}/bin/systemctl show -P StatusText tailscaled.service)
         if [[ $status != Connected* ]]; then
           ${cfg.package}/bin/tailscale up \
-            ${lib.optinalString (cfg.authKeyFile != null) '--auth-key file:${cfg.authKeyFile}'} \
+            ${lib.optinalString (cfg.authKeyFile != null) "--auth-key file:${cfg.authKeyFile}"} \
             ${escapeShellArgs cfg.extraUpFlags}
         fi
       '';
