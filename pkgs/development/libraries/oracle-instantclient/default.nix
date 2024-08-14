@@ -153,7 +153,7 @@ in
       # cp -P *${extLib}* $lib/lib
 
       # install -Dm644 *.jar $out/share/java
-      install -Dm644 sdk/include/* $out/include
+      # install -Dm644 sdk/include/* $out/include
       # install -Dm644 sdk/demo/* $out/share/${pname}-${version}/demo
 
       # provide alias
