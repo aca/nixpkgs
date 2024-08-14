@@ -136,13 +136,15 @@ in
       ++ optional odbcSupport unixODBC;
 
     nativeBuildInputs =
-      [makeWrapper _7zz]
+      [makeWrapper _7zz fd]
       ++ optional stdenv.isLinux autoPatchelfHook
       ++ optional stdenv.isDarwin fixDarwinDylibNames;
 
     outputs = ["out" "dev" "lib"];
 
-    # unpackCmd = "unzip $curSrc";
+    unpackPhase = ''
+      7zz x $curSrc || true
+    '';
 
     installPhase = ''
       set -x
