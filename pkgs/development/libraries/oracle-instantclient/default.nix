@@ -70,7 +70,7 @@ assert odbcSupport -> unixODBC != null; let
         basic = "sha256-JchMWu723K3zfimJI+1R0yEqvs+hkIK10XloKvzuYMo=";
         sdk = "sha256-3E0tbZSOTWP4oZEXyTOlD/umHu/H6fCTnfEFkRnsEeU=";
         sqlplus = "sha256-Q0SbWzaiS6Zm2Lrk8y/2Lu4a5xpZQO4UCviq5NCuSok=";
-        tools = "sha256-brkyfnTS6GcBVp//PwcS9A1EhySX7p5h5CIlT8W0Xfs=";
+        tools = "sha256-c9KSWfr3SrI3tzQJUKMjp9riwFYsZyIpLAzw7qIi5Hg=";
         odbc = "sha256-JzoSdH7mJB709cdXELxWzpgaNTjOZhYH/wLkdzKA2N0=";
       };
     }
