@@ -25,12 +25,14 @@ let
     x86_64-linux = "21.10.0.0.0";
     aarch64-linux = "19.10.0.0.0";
     x86_64-darwin = "19.8.0.0.0";
+    aarch64-darwin = "19.8.0.0.0";
   }.${stdenv.hostPlatform.system} or throwSystem;
 
   directory = {
     x86_64-linux = "2110000";
     aarch64-linux = "191000";
     x86_64-darwin = "198000";
+    aarch64-darwin = "198000";
   }.${stdenv.hostPlatform.system} or throwSystem;
 
   # hashes per component and architecture
@@ -56,6 +58,13 @@ let
       tools = "sha256-1xFFGZapFq9ogGQ6ePSv4PrXl5qOAgRZWAp4mJ5uxdU=";
       odbc = "sha256-S6+5P4daK/+nXwoHmOkj4DIkHtwdzO5GOkCCI612bRY=";
     };
+    aarch64-darwin = {
+      basic = "sha256-V+1BmPOhDYPNXdwkcsBY1MOwt4Yka66/a7/HORzBIIc=";
+      sdk = "sha256-D6iuTEQYqmbOh1z5LnKN16ga6vLmjnkm4QK15S/Iukw=";
+      sqlplus = "sha256-08uoiwoKPZmTxLZLYRVp0UbN827FXdhOukeDUXvTCVk=";
+      tools = "sha256-1xFFGZapFq9ogGQ6ePSv4PrXl5qOAgRZWAp4mJ5uxdU=";
+      odbc = "sha256-S6+5P4daK/+nXwoHmOkj4DIkHtwdzO5GOkCCI612bRY=";
+    };
   }.${stdenv.hostPlatform.system} or throwSystem;
 
   # rels per component and architecture, optional
@@ -66,12 +75,14 @@ let
     x86_64-linux = "linux.x64";
     aarch64-linux = "linux.arm64";
     x86_64-darwin = "macos.x64";
+    aarch64-darwin = "macos.x64";
   }.${stdenv.hostPlatform.system} or throwSystem;
 
   shortArch = {
     x86_64-linux = "linux";
     aarch64-linux = "linux";
     x86_64-darwin = "mac";
+    aarch64-darwin = "mac";
   }.${stdenv.hostPlatform.system} or throwSystem;
 
   # calculate the filename of a single zip file
@@ -142,7 +153,7 @@ stdenv.mkDerivation {
     '';
     sourceProvenance = with sourceTypes; [ binaryBytecode ];
     license = licenses.unfree;
-    platforms = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" ];
+    platforms = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ];
     maintainers = with maintainers; [ dylanmtaylor ];
     hydraPlatforms = [ ];
   };
