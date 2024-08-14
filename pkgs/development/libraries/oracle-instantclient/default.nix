@@ -144,7 +144,9 @@ in
     # unpackCmd = "unzip $curSrc";
 
     installPhase = ''
-      mkdir -p "$out/"{bin,include,lib,"share/java","share/${pname}-${version}/demo/"} $lib/lib
+      set -x
+      # mkdir -p "$out/"{bin,include,lib,"share/java","share/${pname}-${version}/demo/"} $lib/lib
+      mkdir -p "$out/"{bin,include,lib} $lib/lib
       # install -Dm755 {adrci,genezi,uidrvci,sqlplus,exp,expdp,imp,impdp} $out/bin
 
       # cp to preserve symlinks
