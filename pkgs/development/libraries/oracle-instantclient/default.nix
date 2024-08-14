@@ -1,6 +1,6 @@
 {
   lib,
-  undmg,
+  _7zz,
   stdenv,
   fetchurl,
   autoPatchelfHook,
@@ -135,7 +135,7 @@ in
     nativeBuildInputs =
       [makeWrapper unzip]
       ++ optional stdenv.isLinux autoPatchelfHook
-      ++ optional stdenv.isDarwin [fixDarwinDylibNames undmg];
+      ++ optional stdenv.isDarwin [fixDarwinDylibNames _7zz];
 
     outputs = ["out" "dev" "lib"];
 
