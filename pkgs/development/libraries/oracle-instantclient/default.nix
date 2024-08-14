@@ -17,7 +17,7 @@ assert odbcSupport -> unixODBC != null; let
   throwSystem = throw "Unsupported system: ${stdenv.hostPlatform.system}";
 
   # assemble list of components
-  components = ["basic" "sdk" "sqlplus" "tools"] ++ optional odbcSupport "odbc";
+  components = ["basic" "sqlplus" "tools"] ++ optional odbcSupport "odbc";
   # components = ["basic"];
 
   # determine the version number, there might be different ones per architecture
