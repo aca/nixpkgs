@@ -145,17 +145,17 @@ in
 
     installPhase = ''
       mkdir -p "$out/"{bin,include,lib,"share/java","share/${pname}-${version}/demo/"} $lib/lib
-      install -Dm755 {adrci,genezi,uidrvci,sqlplus,exp,expdp,imp,impdp} $out/bin
+      # install -Dm755 {adrci,genezi,uidrvci,sqlplus,exp,expdp,imp,impdp} $out/bin
 
       # cp to preserve symlinks
       cp -P *${extLib}* $lib/lib
 
-      install -Dm644 *.jar $out/share/java
+      # install -Dm644 *.jar $out/share/java
       install -Dm644 sdk/include/* $out/include
-      install -Dm644 sdk/demo/* $out/share/${pname}-${version}/demo
+      # install -Dm644 sdk/demo/* $out/share/${pname}-${version}/demo
 
       # provide alias
-      ln -sfn $out/bin/sqlplus $out/bin/sqlplus64
+      # ln -sfn $out/bin/sqlplus $out/bin/sqlplus64
     '';
 
     postFixup = optionalString stdenv.isDarwin ''
