@@ -142,9 +142,9 @@ in
 
     outputs = ["out" "dev" "lib"];
 
-    unpackPhase = ''
-      7zz x $curSrc || true
-    '';
+    # unpackPhase = ''
+    #   7zz x $curSrc || true
+    # '';
 
     installPhase = ''
       set -x
