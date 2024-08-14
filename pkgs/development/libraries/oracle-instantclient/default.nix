@@ -5,6 +5,7 @@
   fetchurl,
   autoPatchelfHook,
   fixDarwinDylibNames,
+  fd,
   unzip,
   libaio,
   makeWrapper,
@@ -135,7 +136,7 @@ in
       ++ optional odbcSupport unixODBC;
 
     nativeBuildInputs =
-      [makeWrapper unzip _7zz]
+      [makeWrapper _7zz]
       ++ optional stdenv.isLinux autoPatchelfHook
       ++ optional stdenv.isDarwin fixDarwinDylibNames;
 
@@ -145,6 +146,8 @@ in
 
     installPhase = ''
       set -x
+      ls -al
+      fd
       mkdir -p "$out/"{bin,include,lib,"share/java","share/${pname}-${version}/demo/"} $lib/lib
       # mkdir -p "$out/"{bin,include,lib} $lib/lib
       # install -Dm755 {adrci,genezi,uidrvci,sqlplus,exp,expdp,imp,impdp} $out/bin
