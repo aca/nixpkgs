@@ -17,8 +17,8 @@ assert odbcSupport -> unixODBC != null; let
   throwSystem = throw "Unsupported system: ${stdenv.hostPlatform.system}";
 
   # assemble list of components
-  # components = ["basic" "sdk" "sqlplus" "tools"] ++ optional odbcSupport "odbc";
-  components = ["basic"];
+  components = ["basic" "sdk" "sqlplus" "tools"] ++ optional odbcSupport "odbc";
+  # components = ["basic"];
 
   # determine the version number, there might be different ones per architecture
   version =
@@ -26,7 +26,7 @@ assert odbcSupport -> unixODBC != null; let
       x86_64-linux = "21.10.0.0.0";
       aarch64-linux = "19.10.0.0.0";
       x86_64-darwin = "19.8.0.0.0";
-      aarch64-darwin = "19.8.0.0.0";
+      aarch64-darwin = "23.3.0.23.09";
     }
     .${stdenv.hostPlatform.system}
     or throwSystem;
@@ -36,7 +36,7 @@ assert odbcSupport -> unixODBC != null; let
       x86_64-linux = "2110000";
       aarch64-linux = "191000";
       x86_64-darwin = "198000";
-      aarch64-darwin = "198000";
+      aarch64-darwin = "233023";
     }
     .${stdenv.hostPlatform.system}
     or throwSystem;
@@ -66,11 +66,12 @@ assert odbcSupport -> unixODBC != null; let
         odbc = "sha256-S6+5P4daK/+nXwoHmOkj4DIkHtwdzO5GOkCCI612bRY=";
       };
       aarch64-darwin = {
-        basic = "sha256-G83bWDhw9wwjLVee24oy/VhJcCik7/GtKOzgOXuo1/4=";
-        sdk = "sha256-D6iuTEQYqmbOh1z5LnKN16ga6vLmjnkm4QK15S/Iukw=";
-        sqlplus = "sha256-08uoiwoKPZmTxLZLYRVp0UbN827FXdhOukeDUXvTCVk=";
-        tools = "sha256-1xFFGZapFq9ogGQ6ePSv4PrXl5qOAgRZWAp4mJ5uxdU=";
-        odbc = "sha256-S6+5P4daK/+nXwoHmOkj4DIkHtwdzO5GOkCCI612bRY=";
+        # basic = "sha256-G83bWDhw9wwjLVee24oy/VhJcCik7/GtKOzgOXuo1/4=";
+        basic = "sha256-JchMWu723K3zfimJI+1R0yEqvs+hkIK10XloKvzuYMo=";
+        sdk = "sha256-3E0tbZSOTWP4oZEXyTOlD/umHu/H6fCTnfEFkRnsEeU=";
+        sqlplus = "sha256-Q0SbWzaiS6Zm2Lrk8y/2Lu4a5xpZQO4UCviq5NCuSok=";
+        tools = "sha256-brkyfnTS6GcBVp//PwcS9A1EhySX7p5h5CIlT8W0Xfs=";
+        odbc = "sha256-AQwANeqMTE6YZwlrocKsjcfKMiJIxf4f+qna2y08NzI=";
       };
     }
     .${stdenv.hostPlatform.system}
@@ -104,14 +105,14 @@ assert odbcSupport -> unixODBC != null; let
   srcFilename = component: arch: version: rel:
     "instantclient-${component}-${arch}-${version}"
     + (optionalString (rel != "") "-${rel}")
-    + "dbru.zip"; # ¯\_(ツ)_/¯
+    # + "dbru.zip"; # ¯\_(ツ)_/¯
+    + ".dmg"; # ¯\_(ツ)_/¯
 
   # fetcher for the non clickthrough artifacts
   fetcher = srcFilename: hash:
     fetchurl {
-      # url = "https://download.oracle.com/otn_software/${shortArch}/instantclient/${directory}/${srcFilename}";
-      url = "https://download.oracle.com/otn_software/mac/instantclient/233023/instantclient-basic-macos.arm64-23.3.0.23.09-1.dmg";
-      # https://download.oracle.com/otn_software/mac/instantclient/233023/instantclient-tools-macos.arm64-23.3.0.23.09-1.dmg
+      url = "https://download.oracle.com/otn_software/${shortArch}/instantclient/${directory}/${srcFilename}";
+      # url = "https://download.oracle.com/otn_software/mac/instantclient/233023/instantclient-basic-macos.arm64-23.3.0.23.09-1.dmg";
       sha256 = hash;
     };
 
