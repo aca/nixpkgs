@@ -17,8 +17,9 @@ assert odbcSupport -> unixODBC != null; let
   throwSystem = throw "Unsupported system: ${stdenv.hostPlatform.system}";
 
   # assemble list of components
-  components = ["basic" "sqlplus" "tools"] ++ optional odbcSupport "odbc";
-  # components = ["basic"];
+  # components = ["basic" "sqlplus" "tools"] ++ optional odbcSupport "odbc";
+  # components = ["basic" ] ++ optional odbcSupport "odbc";
+  components = ["basic"];
 
   # determine the version number, there might be different ones per architecture
   version =
@@ -134,9 +135,9 @@ in
       ++ optional odbcSupport unixODBC;
 
     nativeBuildInputs =
-      [makeWrapper unzip]
+      [makeWrapper unzip _7zz]
       ++ optional stdenv.isLinux autoPatchelfHook
-      ++ optional stdenv.isDarwin [fixDarwinDylibNames _7zz];
+      ++ optional stdenv.isDarwin fixDarwinDylibNames;
 
     outputs = ["out" "dev" "lib"];
 
