@@ -67,7 +67,7 @@ assert odbcSupport -> unixODBC != null; let
       };
       aarch64-darwin = {
         # basic = "sha256-G83bWDhw9wwjLVee24oy/VhJcCik7/GtKOzgOXuo1/4=";
-        basic = "sha256-G83bWDhw9wwjLVee24oy/VhJcCik7/GtKOzgOXuo1/4=";
+        basic = "sha256-cNZjLa4MVq10nEj/kdl+8roQmClYryhffTW2eyASELE=";
         sdk = "sha256-PerfzgietrnAkbH9IT7XpmaFuyJkPHx0vl4FCtjPzLs=";
         sqlplus = "sha256-khOjmaExAb3rzWEwJ/o4XvRMQruiMw+UgLFtsOGn1nY=";
         tools = "sha256-c9KSWfr3SrI3tzQJUKMjp9riwFYsZyIpLAzw7qIi5Hg=";
