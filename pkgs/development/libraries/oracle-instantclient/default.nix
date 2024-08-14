@@ -150,7 +150,7 @@ in
       # install -Dm755 {adrci,genezi,uidrvci,sqlplus,exp,expdp,imp,impdp} $out/bin
 
       # cp to preserve symlinks
-      cp -P *${extLib}* $lib/lib
+      # cp -P *${extLib}* $lib/lib
 
       # install -Dm644 *.jar $out/share/java
       install -Dm644 sdk/include/* $out/include
