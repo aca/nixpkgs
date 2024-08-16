@@ -141,7 +141,7 @@ in
 
     # unpackCmd = "7zz x $curSrc -o\${$curSrc%.*}";
     # unpackCmd = "7zz x $curSrc -o$(basename $curSrc .dmg)";
-    unpackCmd = "7zz x $curSrc -o instantclient -aoa";
+    unpackCmd = "7zz x $curSrc -aoa -oinstantclient";
 
 
     installPhase = ''
