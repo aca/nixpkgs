@@ -143,8 +143,12 @@ in
     outputs = ["out" "dev" "lib"];
 
     unpackPhase = ''
+      set -x
+      echo "$curSrc"
+      echo "$src"
       ls -al
       7zz x "$curSrc" || true
+      7zz x "$src" || true
       ls -al
     '';
 
