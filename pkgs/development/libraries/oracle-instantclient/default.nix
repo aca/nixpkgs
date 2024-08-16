@@ -119,22 +119,22 @@ assert odbcSupport -> unixODBC != null; let
     };
 
   # assemble srcs
-  # srcs =
-  #   map
-  #   (component: (fetcher (srcFilename component arch version rels.${component} or "") hashes.${component} or ""))
-  #   components;
+  srcs =
+    map
+    (component: (fetcher (srcFilename component arch version rels.${component} or "") hashes.${component} or ""))
+    components;
 
-  src = fetchurl {
-      # url = "https://download.oracle.com/otn_software/${shortArch}/instantclient/${directory}/${srcFilename}";
-      url = "https://download.oracle.com/otn_software/mac/instantclient/233023/instantclient-basic-macos.arm64-23.3.0.23.09.dmg";
-      sha256 = "sha256-cNZjLa4MVq10nEj/kdl+8roQmClYryhffTW2eyASELE=";
-  };
+  # src = fetchurl {
+  #     # url = "https://download.oracle.com/otn_software/${shortArch}/instantclient/${directory}/${srcFilename}";
+  #     url = "https://download.oracle.com/otn_software/mac/instantclient/233023/instantclient-basic-macos.arm64-23.3.0.23.09.dmg";
+  #     sha256 = "sha256-cNZjLa4MVq10nEj/kdl+8roQmClYryhffTW2eyASELE=";
+  # };
 
   pname = "oracle-instantclient";
   extLib = stdenv.hostPlatform.extensions.sharedLibrary;
 in
   stdenv.mkDerivation {
-    inherit pname version src;
+    inherit pname version srcs;
 
     buildInputs =
       [stdenv.cc.cc.lib]
