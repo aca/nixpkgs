@@ -1,10 +1,11 @@
 {
   lib,
+  _7zz,
   stdenv,
   fetchurl,
   autoPatchelfHook,
   fixDarwinDylibNames,
-  _7zz,
+  fd,
   unzip,
   libaio,
   makeWrapper,
@@ -17,7 +18,10 @@ assert odbcSupport -> unixODBC != null; let
   throwSystem = throw "Unsupported system: ${stdenv.hostPlatform.system}";
 
   # assemble list of components
+  # components = ["basic" "sqlplus" "tools"] ++ optional odbcSupport "odbc";
   components = ["basic" "sdk" "sqlplus" "tools"] ++ optional odbcSupport "odbc";
+  # components = ["basic" ] ++ optional odbcSupport "odbc";
+  # components = ["basic"];
 
   # determine the version number, there might be different ones per architecture
   version =
@@ -65,6 +69,7 @@ assert odbcSupport -> unixODBC != null; let
         odbc = "sha256-S6+5P4daK/+nXwoHmOkj4DIkHtwdzO5GOkCCI612bRY=";
       };
       aarch64-darwin = {
+        # basic = "sha256-G83bWDhw9wwjLVee24oy/VhJcCik7/GtKOzgOXuo1/4=";
         basic = "sha256-cNZjLa4MVq10nEj/kdl+8roQmClYryhffTW2eyASELE=";
         sdk = "sha256-PerfzgietrnAkbH9IT7XpmaFuyJkPHx0vl4FCtjPzLs=";
         sqlplus = "sha256-khOjmaExAb3rzWEwJ/o4XvRMQruiMw+UgLFtsOGn1nY=";
@@ -110,6 +115,7 @@ assert odbcSupport -> unixODBC != null; let
   fetcher = srcFilename: hash:
     fetchurl {
       url = "https://download.oracle.com/otn_software/${shortArch}/instantclient/${directory}/${srcFilename}";
+      # url = "https://download.oracle.com/otn_software/mac/instantclient/233023/instantclient-basic-macos.arm64-23.3.0.23.09.dmg";
       sha256 = hash;
     };
 
@@ -131,29 +137,45 @@ in
       ++ optional odbcSupport unixODBC;
 
     nativeBuildInputs =
-      [makeWrapper unzip]
+      [makeWrapper _7zz fd]
       ++ optional stdenv.isLinux autoPatchelfHook
       ++ optional stdenv.isDarwin fixDarwinDylibNames;
 
-    sourceRoot = ".";
-
     outputs = ["out" "dev" "lib"];
 
-    unpackCmd = "unzip $curSrc";
+    sourceRoot = ".";
+
+    # unpackPhase = ''
+    #   runHook preUnpack
+    #   set -x
+    #   echo "$curSrc"
+    #   echo "$src"
+    #   echo "$out"
+    #   ls -al
+    #   7zz x "$curSrc" || true
+    #   7zz x "$src" || true
+    #   runHook postUnpack
+    #   ls -al
+    # '';
 
     installPhase = ''
+      set -x
+      ls -al
+      fd
       mkdir -p "$out/"{bin,include,lib,"share/java","share/${pname}-${version}/demo/"} $lib/lib
-      install -Dm755 {adrci,genezi,uidrvci,sqlplus,exp,expdp,imp,impdp} $out/bin
+      # mkdir -p "$out/"{bin,include,lib} $lib/lib
+      # install -Dm755 {adrci,genezi,uidrvci,sqlplus,exp,expdp,imp,impdp} $out/bin
+      # install -Dm755 {adrci,genezi,uidrvci} $out/bin
 
       # cp to preserve symlinks
       cp -P *${extLib}* $lib/lib
 
-      install -Dm644 *.jar $out/share/java
-      install -Dm644 sdk/include/* $out/include
-      install -Dm644 sdk/demo/* $out/share/${pname}-${version}/demo
+      # install -Dm644 *.jar $out/share/java
+      # install -Dm644 sdk/include/* $out/include
+      # install -Dm644 sdk/demo/* $out/share/${pname}-${version}/demo
 
       # provide alias
-      ln -sfn $out/bin/sqlplus $out/bin/sqlplus64
+      # ln -sfn $out/bin/sqlplus $out/bin/sqlplus64
     '';
 
     postFixup = optionalString stdenv.isDarwin ''
@@ -173,7 +195,7 @@ in
       '';
       sourceProvenance = with sourceTypes; [binaryBytecode];
       license = licenses.unfree;
-      platforms = ["x86_64-linux" "aarch64-linux" "x86_64-darwin"];
+      platforms = ["x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin"];
       maintainers = with maintainers; [dylanmtaylor];
       hydraPlatforms = [];
     };
