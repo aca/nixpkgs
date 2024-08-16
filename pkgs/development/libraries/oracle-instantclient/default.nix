@@ -114,7 +114,7 @@ assert odbcSupport -> unixODBC != null; let
   fetcher = srcFilename: hash:
     fetchurl {
       # url = "https://download.oracle.com/otn_software/${shortArch}/instantclient/${directory}/${srcFilename}";
-      url = "https://download.oracle.com/otn_software/mac/instantclient/233023/instantclient-basic-macos.arm64-23.3.0.23.09-1.dmg";
+      url = "https://download.oracle.com/otn_software/mac/instantclient/233023/instantclient-basic-macos.arm64-23.3.0.23.09.dmg";
       sha256 = hash;
     };
 
