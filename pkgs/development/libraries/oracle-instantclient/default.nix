@@ -139,7 +139,7 @@ in
 
     outputs = ["out" "dev" "lib"];
 
-    # unpackCmd = "unzip $curSrc";
+    unpackCmd = "7zz x $curSrc -aoa";
 
     installPhase = ''
       mkdir -p "$out/"{bin,include,lib,"share/java","share/${pname}-${version}/demo/"} $lib/lib
