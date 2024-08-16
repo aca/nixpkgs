@@ -113,8 +113,8 @@ assert odbcSupport -> unixODBC != null; let
   # fetcher for the non clickthrough artifacts
   fetcher = srcFilename: hash:
     fetchurl {
-      # url = "https://download.oracle.com/otn_software/${shortArch}/instantclient/${directory}/${srcFilename}";
-      url = "https://download.oracle.com/otn_software/mac/instantclient/233023/instantclient-basic-macos.arm64-23.3.0.23.09.dmg";
+      url = "https://download.oracle.com/otn_software/${shortArch}/instantclient/${directory}/${srcFilename}";
+      # url = "https://download.oracle.com/otn_software/mac/instantclient/233023/instantclient-basic-macos.arm64-23.3.0.23.09.dmg";
       sha256 = hash;
     };
 
@@ -123,12 +123,6 @@ assert odbcSupport -> unixODBC != null; let
     map
     (component: (fetcher (srcFilename component arch version rels.${component} or "") hashes.${component} or ""))
     components;
-
-  # src = fetchurl {
-  #     # url = "https://download.oracle.com/otn_software/${shortArch}/instantclient/${directory}/${srcFilename}";
-  #     url = "https://download.oracle.com/otn_software/mac/instantclient/233023/instantclient-basic-macos.arm64-23.3.0.23.09.dmg";
-  #     sha256 = "sha256-cNZjLa4MVq10nEj/kdl+8roQmClYryhffTW2eyASELE=";
-  # };
 
   pname = "oracle-instantclient";
   extLib = stdenv.hostPlatform.extensions.sharedLibrary;
