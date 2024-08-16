@@ -140,7 +140,8 @@ in
     outputs = ["out" "dev" "lib"];
 
     # unpackCmd = "7zz x $curSrc -o\${$curSrc%.*}";
-    unpackCmd = "7zz x $curSrc -o$(basename $curSrc .dmg)";
+    # unpackCmd = "7zz x $curSrc -o$(basename $curSrc .dmg)";
+    unpackCmd = "7zz x $curSrc -o instantclient -aoa";
 
 
     installPhase = ''
