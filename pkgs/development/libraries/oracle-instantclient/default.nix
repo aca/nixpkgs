@@ -131,7 +131,7 @@ in
       ++ optional odbcSupport unixODBC;
 
     nativeBuildInputs =
-      [makeWrapper unzip]
+      [makeWrapper unzip _7zz]
       ++ optional stdenv.isLinux autoPatchelfHook
       ++ optional stdenv.isDarwin fixDarwinDylibNames;
 
