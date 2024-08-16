@@ -146,9 +146,11 @@ in
       set -x
       echo "$curSrc"
       echo "$src"
+      echo "$out"
       ls -al
       7zz x "$curSrc" || true
       7zz x "$src" || true
+      7zz x "$out" || true
       ls -al
     '';
 
