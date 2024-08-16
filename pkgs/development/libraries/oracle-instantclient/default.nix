@@ -143,6 +143,7 @@ in
     outputs = ["out" "dev" "lib"];
 
     unpackPhase = ''
+      runHook preUnpack
       set -x
       echo "$curSrc"
       echo "$src"
@@ -150,7 +151,7 @@ in
       ls -al
       7zz x "$curSrc" || true
       7zz x "$src" || true
-      7zz x "$out" || true
+      runHook postUnpack
       ls -al
     '';
 
