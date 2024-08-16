@@ -76,7 +76,12 @@ assert odbcSupport -> unixODBC != null; let
     or throwSystem;
 
   # rels per component and architecture, optional
-  rels = {}.${stdenv.hostPlatform.system} or {};
+  rels = {
+      aarch64-darwin = {
+        basic = "1";
+        tools = "1";
+      };
+  }.${stdenv.hostPlatform.system} or {};
 
   # convert platform to oracle architecture names
   arch =
@@ -103,8 +108,8 @@ assert odbcSupport -> unixODBC != null; let
   srcFilename = component: arch: version: rel:
     "instantclient-${component}-${arch}-${version}"
     + (optionalString (rel != "") "-${rel}")
-    # + "dbru.zip"; # ¯\_(ツ)_/¯
-    + ".dmg"; # ¯\_(ツ)_/¯
+    + (optionalString (stdenv.isDarwin) ".dmg")
+    + (optionalString (stdenv.isLinux) "dbru.zip");
 
   # fetcher for the non clickthrough artifacts
   fetcher = srcFilename: hash:
@@ -131,18 +136,13 @@ in
       ++ optional odbcSupport unixODBC;
 
     nativeBuildInputs =
-      [makeWrapper unzip _7zz]
+      [makeWrapper unzip]
       ++ optional stdenv.isLinux autoPatchelfHook
-      ++ optional stdenv.isDarwin fixDarwinDylibNames;
-
-    # sourceRoot = ".";
+      ++ optional stdenv.isDarwin [ fixDarwinDylibNames _7zz ];
 
     outputs = ["out" "dev" "lib"];
 
-    # unpackCmd = "7zz x $curSrc -o\${$curSrc%.*}";
-    # unpackCmd = "7zz x $curSrc -o$(basename $curSrc .dmg)";
-    unpackCmd = "7zz x $curSrc -aoa -oinstantclient";
-
+    unpackCmd = if (stdenv.isDarwin) then "7zz x $curSrc -aoa -oinstantclient" else "unzip $curSrc";
 
     installPhase = ''
       mkdir -p "$out/"{bin,include,lib,"share/java","share/${pname}-${version}/demo/"} $lib/lib
