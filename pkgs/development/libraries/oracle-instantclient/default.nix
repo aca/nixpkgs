@@ -135,11 +135,11 @@ in
       ++ optional stdenv.isLinux autoPatchelfHook
       ++ optional stdenv.isDarwin fixDarwinDylibNames;
 
-    sourceRoot = ".";
+    # sourceRoot = ".";
 
     outputs = ["out" "dev" "lib"];
 
-    unpackCmd = "unzip $curSrc";
+    # unpackCmd = "unzip $curSrc";
 
     installPhase = ''
       mkdir -p "$out/"{bin,include,lib,"share/java","share/${pname}-${version}/demo/"} $lib/lib
