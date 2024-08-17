@@ -76,12 +76,15 @@ assert odbcSupport -> unixODBC != null; let
     or throwSystem;
 
   # rels per component and architecture, optional
-  rels = {
+  rels =
+    {
       aarch64-darwin = {
         basic = "1";
         tools = "1";
       };
-  }.${stdenv.hostPlatform.system} or {};
+    }
+    .${stdenv.hostPlatform.system}
+    or {};
 
   # convert platform to oracle architecture names
   arch =
@@ -108,8 +111,8 @@ assert odbcSupport -> unixODBC != null; let
   srcFilename = component: arch: version: rel:
     "instantclient-${component}-${arch}-${version}"
     + (optionalString (rel != "") "-${rel}")
-    + (optionalString (stdenv.isDarwin) ".dmg")
-    + (optionalString (stdenv.isLinux) "dbru.zip");
+    + (optionalString (arch == "macos.arm64") ".dmg")
+    + (optionalString (arch != "macos.arm64") "dbru.zip");
 
   # fetcher for the non clickthrough artifacts
   fetcher = srcFilename: hash:
@@ -136,13 +139,18 @@ in
       ++ optional odbcSupport unixODBC;
 
     nativeBuildInputs =
-      [makeWrapper unzip]
+      [makeWrapper]
       ++ optional stdenv.isLinux autoPatchelfHook
-      ++ optional stdenv.isDarwin [ fixDarwinDylibNames _7zz ];
+      ++ optional stdenv.isDarwin [fixDarwinDylibNames]
+      ++ optional (arch != "macos.arm64") [unzip]
+      ++ optional (arch == "macos.arm64") [_7zz];
 
     outputs = ["out" "dev" "lib"];
 
-    unpackCmd = if (stdenv.isDarwin) then "7zz x $curSrc -aoa -oinstantclient" else "unzip $curSrc";
+    unpackCmd =
+      if (arch == "macos.arm64")
+      then "7zz x $curSrc -aoa -oinstantclient"
+      else "unzip $curSrc";
 
     installPhase = ''
       mkdir -p "$out/"{bin,include,lib,"share/java","share/${pname}-${version}/demo/"} $lib/lib
@@ -177,7 +185,7 @@ in
       sourceProvenance = with sourceTypes; [binaryBytecode];
       license = licenses.unfree;
       platforms = ["x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin"];
-      maintainers = with maintainers; [dylanmtaylor];
+      maintainers = with maintainers; [dylanmtaylor aca];
       hydraPlatforms = [];
     };
   }
